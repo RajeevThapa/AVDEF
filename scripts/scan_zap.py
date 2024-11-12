@@ -6,7 +6,7 @@ import requests
 from zapv2 import ZAPv2
 
 def start_zap_daemon():
-    zap_command = "zaproxy -daemon -port 8081 -host 0.0.0.0 -config api.disablekey=true"
+    zap_command = "zaproxy -daemon -port 8080 -host 0.0.0.0 -config api.disablekey=true"
     
     try:
         process = subprocess.Popen(zap_command, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -16,7 +16,7 @@ def start_zap_daemon():
         for attempt in range(retries):
             print(f"Attempt {attempt + 1} to connect to ZAP...")
             time.sleep(5)  # Wait for ZAP to start
-            zap_url = "http://localhost:8081"
+            zap_url = "http://localhost:8080"
             try:
                 response = requests.get(zap_url)
                 if response.status_code == 200:
