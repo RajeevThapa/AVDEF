@@ -31,7 +31,6 @@ pipeline {
                 }
             }
         }
-
         stage('Install Dependencies') {
             steps {
                 script {
@@ -40,17 +39,13 @@ pipeline {
                     sh """
                         . venv/bin/activate  # Activate the virtual environment
                         pip install --upgrade pip  # Ensure pip is the latest version
+                        pip install --upgrade urllib3 six  # Upgrade urllib3 and six
                         pip install -r requirements.txt  # Install dependencies from requirements.txt
-                    """
-                    
-                    // Verify zapv2 installation
-                    sh """
-                        . venv/bin/activate
-                        pip show python-owasp-zap-v2.4 || echo "zapv2 is not installed"
                     """
                 }
             }
         }
+
 
         stage('Run Nmap Scan') {
             steps {
