@@ -1,19 +1,5 @@
-beautifulsoup4==4.12.3
-certifi==2024.8.30
-chardet==3.0.4
-charset-normalizer==3.4.0
-click==4.0
-html2text==2024.2.26
-idna==2.7
+pyyaml==6.0.2
+requests==2.32.3
 python-owasp-zap-v2.4==0.0.14
-PyYAML==6.0.2
-requests
-# requests==2.20.1
-#six==1.10.0
-six>=1.16.0,<2.0.0
-soupsieve==2.6
-tabulate==0.7.5
-termcolor==1.1.0
-urllib3==1.24.3
-#zapcli==0.10.0
-zaproxy==0.3.2
+html2text==2024.2.26
+beautifulsoup4==4.12.3
