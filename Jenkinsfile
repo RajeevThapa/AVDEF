@@ -72,7 +72,7 @@ pipeline {
         stage('Run Metasploit Exploit') {
             steps {
                 echo 'Running Metasploit exploit...'
-                sh 'python3 scripts/scan_metasploit.py'
+                sh 'python3 scripts/exploit_metasploit.py'
             }
         }
 
