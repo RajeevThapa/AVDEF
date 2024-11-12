@@ -4,7 +4,7 @@ pipeline {
     environment {
         // Set environment variables for target URL and output directory
         TARGET_URL = 'http://testhtml5.vulnweb.com/'  // Provide the target URL here
-        OUTPUT_DIR = '/var/lib/jenkins/workspace/zap_scans/zap_reports/'  // Provide the desired output directory here
+        OUTPUT_DIR = '/var/lib/jenkins/workspace/AVDEF/scans'  // Unified output directory for all scans
         VENV_DIR = 'venv'  // Path to the virtual environment
     }
 
@@ -46,14 +46,14 @@ pipeline {
         stage('Run Nmap Scan') {
             steps {
                 echo 'Running Nmap scan...'
-                sh 'python3 scripts/scan_nmap.py'
+                sh 'python3 scripts/scan_nmap.py --output-dir ${OUTPUT_DIR}/nmap'
             }
         }
 
         stage('Run Nikto Scan') {
             steps {
                 echo 'Running Nikto scan...'
-                sh 'python3 scripts/scan_nikto.py'
+                sh 'python3 scripts/scan_nikto.py --output-dir ${OUTPUT_DIR}/nikto'
             }
         }
 
@@ -63,7 +63,7 @@ pipeline {
                 script {
                     // Activate venv and run ZAP scan script using bash
                     sh """
-                        bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_zap.py'
+                        bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_zap.py --output-dir ${OUTPUT_DIR}/zap'
                     """
                 }
             }
@@ -82,7 +82,7 @@ pipeline {
                 script {
                     // Ensure the virtual environment is activated before running the report generator
                     sh """
-                        bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/report_generator.py'
+                        bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/report_generator.py --output-dir ${OUTPUT_DIR}/reports'
                     """
                 }
             }
@@ -99,33 +99,26 @@ pipeline {
         stage('Commit and Push Scan Results') {
             steps {
                 script {
-                // Sanitize the TARGET_URL for use in file paths
-                def sanitizedUrl = TARGET_URL.replaceAll('https?://', '').replaceAll('/', '_')
-                
-                // Define paths for the Git repository folder structure
-                def zapReportPath = "${env.WORKSPACE}/scans/zap/${sanitizedUrl}_zap_report.html"
-                def niktoReportPath = "${env.WORKSPACE}/scans/nikto/${sanitizedUrl}_nikto.txt"
-                def nmapReportPath = "${env.WORKSPACE}/scans/nmap/${sanitizedUrl}_nmap.txt"
-                def summaryReportPath = "${env.WORKSPACE}/scans/reports/summary_report.md"
-                
-                // Create directories if they don't exist
-                sh "mkdir -p ${env.WORKSPACE}/scans/zap ${env.WORKSPACE}/scans/nikto ${env.WORKSPACE}/scans/nmap ${env.WORKSPACE}/scans/reports"
-                
-                // Copy the generated reports to the workspace
-                // sh "cp /var/lib/jenkins/workspace/zap_scans/zap_reports/${sanitizedUrl}_zap_report.html ${zapReportPath}"
-                // sh "cp /root/.jenkins/workspace/AVDEF/scans/nikto/${sanitizedUrl}_nikto.txt ${niktoReportPath}"
-                // sh "cp /root/.jenkins/workspace/AVDEF/scans/nmap/${sanitizedUrl}_nmap.txt ${nmapReportPath}"
-                // sh "cp /root/.jenkins/workspace/AVDEF/scans/reports/summary_report.md ${summaryReportPath}"
-                sh "cp /var/lib/jenkins/workspace/zap_scans/zap_reports/${sanitizedUrl}_zap_report.html ${zapReportPath}"
-                sh "cp ${env.WORKSPACE}/scans/nikto/${sanitizedUrl}_nikto.txt ${niktoReportPath}"
-                sh "cp ${env.WORKSPACE}/scans/nmap/${sanitizedUrl}_nmap.txt ${nmapReportPath}"
-                sh "cp ${env.WORKSPACE}/scans/reports/summary_report.md ${summaryReportPath}"
+                    def sanitizedUrl = TARGET_URL.replaceAll('https?://', '').replaceAll('/', '_')
+                    
+                    // Define report paths
+                    def zapReportPath = "${OUTPUT_DIR}/zap/${sanitizedUrl}_zap_report.html"
+                    def niktoReportPath = "${OUTPUT_DIR}/nikto/${sanitizedUrl}_nikto.txt"
+                    def nmapReportPath = "${OUTPUT_DIR}/nmap/${sanitizedUrl}_nmap.txt"
+                    def summaryReportPath = "${OUTPUT_DIR}/reports/summary_report.md"
+                    
+                    // Copy reports to workspace
+                    sh "mkdir -p ${env.WORKSPACE}/scans/zap ${env.WORKSPACE}/scans/nikto ${env.WORKSPACE}/scans/nmap ${env.WORKSPACE}/scans/reports"
+                    sh "cp ${zapReportPath} ${env.WORKSPACE}/scans/zap/${sanitizedUrl}_zap_report.html"
+                    sh "cp ${niktoReportPath} ${env.WORKSPACE}/scans/nikto/${sanitizedUrl}_nikto.txt"
+                    sh "cp ${nmapReportPath} ${env.WORKSPACE}/scans/nmap/${sanitizedUrl}_nmap.txt"
+                    sh "cp ${summaryReportPath} ${env.WORKSPACE}/scans/reports/summary_report.md"
 
-                // Commit and push the results
-                sshagent(credentials: ['c2a210b9-81da-4beb-ab7d-8c001b2fb92b']) {
-                    sh 'git add scans/zap scans/nikto scans/nmap scans/reports'
-                    sh 'git commit -m "Add scan reports for ZAP, Nikto, Nmap, and summary"'
-                    sh 'git push origin main'
+                    // Commit and push
+                    sshagent(credentials: ['c2a210b9-81da-4beb-ab7d-8c001b2fb92b']) {
+                        sh 'git add scans/zap scans/nikto scans/nmap scans/reports'
+                        sh 'git commit -m "Add scan reports for ZAP, Nikto, Nmap, and summary"'
+                        sh 'git push origin main'
                     }
                 }
             }
