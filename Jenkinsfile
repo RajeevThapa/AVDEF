@@ -8,22 +8,30 @@ pipeline {
     }
 
     stages {
-        stage('Check Repo') {
+        stage('Checkout') {
             steps {
-                script {
-                    // Checkout the latest code from the repository
-                    echo 'Checking out the latest code from the repository...'
-                    checkout scm
-                }
+                git branch: 'main', 
+                    credentialsId: 'c2a210b9-81da-4beb-ab7d-8c001b2fb92b', // Jenkins integration with GitHub
+                    url: 'https://github.com/RajeevThapa/AVDEF'
             }
         }
-
+        
         stage('Activate Virtual Environment') {
             steps {
                 script {
                     // Activate the virtual environment from the existing venv folder using '.' (dot) instead of 'source'
                     echo 'Activating virtual environment...'
                     sh '. venv/bin/activate'  // Use dot instead of source for sh compatibility
+                }
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Install dependencies from requirements.txt using pip
+                    echo 'Installing Python dependencies...'
+                    sh 'pip install -r requirements.txt'  // Install dependencies (including zapv2)
                 }
             }
         }
