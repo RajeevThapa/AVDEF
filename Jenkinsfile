@@ -8,20 +8,22 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
+        stage('Check Repo') {
             steps {
-                git branch: 'main', 
-                    credentialsId: 'c2a210b9-81da-4beb-ab7d-8c001b2fb92b', // Jenkins integration with GitHub
-                    url: 'https://github.com/RajeevThapa/AVDEF'
+                script {
+                    // Checkout the latest code from the repository
+                    echo 'Checking out the latest code from the repository...'
+                    checkout scm
+                }
             }
         }
 
         stage('Activate Virtual Environment') {
             steps {
                 script {
-                    // Activate the virtual environment from the existing venv folder
+                    // Activate the virtual environment from the existing venv folder using '.' (dot) instead of 'source'
                     echo 'Activating virtual environment...'
-                    sh 'source venv/bin/activate'
+                    sh '. venv/bin/activate'  // Use dot instead of source for sh compatibility
                 }
             }
         }
