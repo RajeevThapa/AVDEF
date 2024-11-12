@@ -85,8 +85,13 @@ pipeline {
         stage('Generate Reports') {
             steps {
                 echo 'Generating reports...'
-                // Assuming generate_reports.py generates the necessary reports
-                sh 'python3 scripts/report_generator.py'
+                script {
+                    // Ensure the virtual environment is activated before running the report generator
+                    sh """
+                        . venv/bin/activate  # Activate the virtual environment
+                        python3 scripts/report_generator.py  # Run the report generator script
+                    """
+                }
             }
         }
 
