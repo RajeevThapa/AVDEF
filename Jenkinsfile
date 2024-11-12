@@ -103,7 +103,7 @@ pipeline {
                 def sanitizedUrl = TARGET_URL.replaceAll('https?://', '').replaceAll('/', '_')
                 
                 // Define paths for the Git repository folder structure
-                def zapReportPath = "${env.WORKSPACE}/scans/zap/${sanitizedUrl}__zap_report.html"
+                def zapReportPath = "${env.WORKSPACE}/scans/zap/${sanitizedUrl}_zap_report.html"
                 def niktoReportPath = "${env.WORKSPACE}/scans/nikto/${sanitizedUrl}_nikto.txt"
                 def nmapReportPath = "${env.WORKSPACE}/scans/nmap/${sanitizedUrl}_nmap.txt"
                 def summaryReportPath = "${env.WORKSPACE}/scans/reports/summary_report.md"
