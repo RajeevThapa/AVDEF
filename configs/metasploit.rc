@@ -1,0 +1,5 @@
+# Directory Traversal on /admin/
+use auxiliary/scanner/http/dir_scanner
+set RHOSTS testhtml5.vulnweb.com
+set PATH /admin/
+run

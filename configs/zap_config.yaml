@@ -1,0 +1,9 @@
+# # zap_config.yaml
+# target_url: "http://testhtml5.vulnweb.com"  # Target URL for the ZAP scan
+# output_dir: "/home/rajeev/User_rajeev/AAU/AVDEF/scans/zap/"  # Directory to save the scan report
+
+# URL for the ZAP scan - can be overridden using environment variables
+target_url: "${TARGET_URL:http://testhtml5.vulnweb.com}"  # Default URL if not provided
+
+# Output directory for the ZAP scan reports - can be overridden using environment variables
+output_dir: "${OUTPUT_DIR:/home/rajeev/User_rajeev/AAU/AVDEF/scans/zap/}"  # Default directory if not provided
