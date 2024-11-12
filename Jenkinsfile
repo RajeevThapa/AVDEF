@@ -50,7 +50,6 @@ pipeline {
         stage('Run Nmap Scan') {
             steps {
                 echo 'Running Nmap scan...'
-                // Uncomment this line to run the Nmap scan
                 // sh 'python3 scripts/scan_nmap.py'
             }
         }
@@ -58,7 +57,6 @@ pipeline {
         stage('Run Nikto Scan') {
             steps {
                 echo 'Running Nikto scan...'
-                // Uncomment this line to run the Nikto scan
                 // sh 'python3 scripts/scan_nikto.py'
             }
         }
@@ -79,7 +77,6 @@ pipeline {
         stage('Run Metasploit Exploit') {
             steps {
                 echo 'Running Metasploit exploit...'
-                // Uncomment this line to run the Metasploit exploit
                 // sh 'python3 scripts/scan_metasploit.py'
             }
         }
@@ -88,7 +85,7 @@ pipeline {
             steps {
                 echo 'Generating reports...'
                 // Assuming generate_reports.py generates the necessary reports
-                sh 'python3 generate_reports.py'
+                sh 'python3 scripts/report_generator.py'
             }
         }
 
@@ -96,7 +93,7 @@ pipeline {
             steps {
                 echo 'Sending notifications...'
                 // Example: Send notification through Slack or Email
-                sh 'python3 send_notification.py'
+                sh 'python3 scans/notify.py'
             }
         }
     }
