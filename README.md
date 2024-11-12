@@ -1,64 +1,92 @@
-vuln_auto_framework/
-├── scans/
+# Automated Vulnerability Detection and Exploitation Framework (VDEF)
+
+## Overview
+AVDEF is a framework designed to automate the process of vulnerability detection, exploitation, and reporting. Tools like Nmap, Nikto, and OWASP ZAP for vulnerability scans, and Metasploit for exploitation, AVDEF automates each step, from scanning to notifying the security team(for now only sample SMTP has been setup) with detailed reports. For the non-automation part we have another repo which is modfied to work manually. Link: https://github.com/RajeevThapa/VDEF.
+
+## Project Structure
+
+```
+Automated Vulnerability Detection and Exploitation Framework/
+├── scans/                                                  # Stores scan outputs for various tools
 │   ├── nmap/
 │   ├── nikto/
-│   ├── openvas/
 │   ├── zap/
 │   └── reports/
-├── scripts/
+├── scripts/                                                # Contains Python scripts for scanning, exploitation, and reporting
 │   ├── scan_nmap.py
-│   ├── scan_openvas.py
 │   ├── scan_zap.py
 │   └── scan_nikto.py
 │   ├── exploit_metasploit.py
 │   ├── report_generator.py
 │   └── notify.py
-├── configs/
+├── configs/                                                # Configuration files for ZAP, OpenVAS, and Metasploit
 │   ├── zap_config.yaml
-│   ├── openvas_config.yaml
 │   └── metasploit.rc
-├── Jenkinsfile
+├── Jenkinsfile                                             # CI/CD pipeline for automating the workflow
 └── README.md
+```
 
-# Project Workflow
+## Workflow
 
-## 1. Scan Targets: Using Nmap, OWASP ZAP and, Nikto to identify vulnerabilities.
-## 2. Exploit Detected Vulnerabilities: Use Metasploit and other tools for automated exploitation.
-## 3. Generate Reports: Aggregate results and format them into a report.
-## 4. Notifications: Notify the team on scan completion and send reports.
-## 5. Automate with Jenkins: Set up Jenkins to run the entire process on schedule or on-demand.
+### Step 1: Configure Scans
+Define scan parameters in the configuration files:
+- **zap_config.yaml**: Configuration for OWASP ZAP.
+- **metasploit.rc**: Commands for Metasploit.
 
-### Step 1: Set Up Configuration Files
-- zap_config.yaml
-- openvas_config.yaml (Not Using GVM to huge disc space it allocates around 10-20 gb)
-- metasploit.rc
+### Step 2: Run Vulnerability Detection Scripts
+Execute scripts to scan for vulnerabilities:
+- **scan_nmap.py**: Runs Nmap scans and saves results.
+- **scan_zap.py**: Runs OWASP ZAP in passive/active mode based on configuration.
+- **scan_nikto.py**: Runs Nikto scan for web vulnerabilities.
 
-### Step 2: Write Vulnerability Detection Scripts
-- scan_nmap.py
-- scan_openvas.py (Not Using GVM to huge disc space it allocates around 10-20 gb)
-- scan_zap.py
-- scan_nikto.py
+### Step 3: Exploit Detected Vulnerabilities
+Using **exploit_metasploit.py**, automate Metasploit to exploit known vulnerabilities.
 
-### Step 3: Exploitation Script with Metasploit
-- exploit_metasploit.py
+### Step 4: Generate Reports
+The **report_generator.py** script aggregates and formats scan results into a markdown report.
 
-### Step 4: Report Generation Script
-- report_generator.py
+### Step 5: Send Notifications
+After report generation, **notify.py** sends the summary to the team via email.
 
-### Step 5: Notifications Script
-- notify.py
+### Step 6: Automate with Jenkins
+Use **Jenkinsfile** to set up a CI/CD pipeline for automating the entire workflow on schedule or on demand.
 
-### Step 6: Jenkinsfile for CI/CD Pipeline
-- Jenkinsfile
+## Prerequisites
+- Python 3.6+
+- Install dependencies: `pip install -r requirements.txt`
+- Vulnerable test website used for demonstration: [http://www.vulnweb.com](http://www.vulnweb.com)
 
-#### Dependencies
-- Zapproxy
+## Script Descriptions
 
-zaproxy -daemon -port 8080 -config api.disablekey=true
+### scan_nmap.py
+Performs a vulnerability scan using Nmap. Saves the scan results in the `scans/nmap/` directory.
+![Screenshot from 2024-11-12 18-01-36](https://github.com/user-attachments/assets/5c4beb60-c065-496a-9fb7-ba84c29c6791)
 
-- Taken Vulnerable test website from: http://www.vulnweb.com/
-- scan_namp.py takes 459.70 seconds to scan http://testhtml5.vulnweb.com/
-- scan_zap.py takes 30 seconds to passive scan and takes 1200 seconds approx for active scan http://testhtml5.vuln
-- scan_nikto.py takes 387 seconds to scan http://testhtml5.vul
+### scan_zap.py
+- Starts OWASP ZAP in daemon mode.
+- Passively or actively scans the target, as configured.
+- Saves results to `scans/zap/`.
+![Screenshot from 2024-11-12 18-02-08](https://github.com/user-attachments/assets/2b474ba5-57ea-463c-8635-2e3377a9ff49)
 
-- exploit_metasploit.py: script successfully ran the dir_scanner module on testhtml5.vulnweb.com, targeting the /admin/ path, and completed without errors. The scan didn’t report any further results in this output, which implies that: No vulnerable directories or pages were found under /admin/ with the 404 status used as a filter, meaning pages or files under /admin/ may not be accessible or do not exist on the target. Scan Completion: The message “[*] Auxiliary module execution completed” confirms that the scan completed successfully, without interruptions.To perform a more comprehensive scan or identify vulnerabilities in other areas, Expand Directory Paths: Add other directories commonly found on web servers, such as /login/, /config/, /backup/, etc., to the PATH setting and re-run dir_scanner.
+### scan_nikto.py
+Executes Nikto for scanning web servers and identifying potential issues. Results are saved in `scans/nikto/`.
+![Screenshot from 2024-11-12 18-01-52](https://github.com/user-attachments/assets/69225328-c20b-42af-87fb-8a9ef137ec1e)
+
+### exploit_metasploit.py
+Runs Metasploit with pre-defined commands in `metasploit.rc` to exploit vulnerabilities on the target.
+![Screenshot from 2024-11-12 18-03-19](https://github.com/user-attachments/assets/b2c29a9c-7e7a-468e-aca3-bd9254f05f83)
+
+### report_generator.py
+Converts scan results from Nmap, ZAP, and Nikto into a summarized markdown report, saved in `scans/reports/summary_report.md`.
+
+### notify.py
+Sends the vulnerability scan report via email to the security team.
+
+## Jenkins CI/CD Pipeline
+Automate the end-to-end process with Jenkins by executing the steps in `Jenkinsfile`.
+![image](https://github.com/user-attachments/assets/7e78605d-f035-4ba2-b4e3-9a4056487ae6)
+
+## Sample Runtime Statistics
+- **scan_nmap.py**: Approx. 460 seconds for `http://testhtml5.vulnweb.com`.
+- **scan_zap.py**: ~30 seconds (passive) and 1200 seconds (active) for `http://testhtml5.vulnweb.com`.
+- **scan_nikto.py**: Approx. 387 seconds for `http://testhtml5.vulnweb.com`.
