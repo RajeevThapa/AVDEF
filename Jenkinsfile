@@ -41,6 +41,7 @@ pipeline {
                         pip install --upgrade pip  # Ensure pip is the latest version
                         pip install --upgrade urllib3 six  # Upgrade urllib3 and six
                         pip install -r requirements.txt  # Install dependencies from requirements.txt
+                        pip show html2text  # Confirm html2text is installed
                     """
                 }
             }
