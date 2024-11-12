@@ -21,16 +21,20 @@ pipeline {
         stage('Create Virtual Environment') {
             steps {
                 script {
-                    // Check if the virtual environment exists, and create if it doesn't
-                    if (!fileExists("${VIRTUAL_ENV}/bin/activate")) {
-                        echo 'Creating virtual environment...'
-                        sh 'python3 -m venv venv'  // Create virtual environment
-                    } else {
-                        echo 'Virtual environment already exists.'
-                    }
+                    // Remove any existing venv
+                    sh 'rm -rf ${VENV_DIR}'
+
+                    // Create a new virtual environment
+                    sh 'python3 -m venv ${VENV_DIR}'
+
+                    // Activate the virtual environment
+                    sh '''
+                        source ${VENV_DIR}/bin/activate
+                    '''
                 }
             }
         }
+        
         stage('Install Dependencies') {
             steps {
                 script {
@@ -41,7 +45,6 @@ pipeline {
                         pip install --upgrade pip  # Ensure pip is the latest version
                         pip install --upgrade urllib3 six  # Upgrade urllib3 and six
                         pip install -r requirements.txt  # Install dependencies from requirements.txt
-                        pip show html2text  # Confirm html2text is installed
                     """
                 }
             }
@@ -66,11 +69,11 @@ pipeline {
             steps {
                 echo 'Running ZAP scan...'
                 script {
-                    // Run the ZAP scan script after activating the virtual environment
-                    sh """
-                        . venv/bin/activate  # Activate the virtual environment
-                        python3 scripts/scan_zap.py  # Run ZAP scan script
-                    """
+                    // Activate venv and run ZAP script
+                    sh '''
+                        source ${VENV_DIR}/bin/activate
+                        python3 scripts/scan_zap.py
+                    '''
                 }
             }
         }
@@ -88,7 +91,7 @@ pipeline {
                 script {
                     // Ensure the virtual environment is activated before running the report generator
                     sh """
-                        . venv/bin/activate  # Activate the virtual environment
+                        source ${VENV_DIR}/bin/activate
                         python3 scripts/report_generator.py  # Run the report generator script
                     """
                 }
