@@ -2,9 +2,7 @@ pipeline {
     agent any
 
     environment {
-        // Set environment variables for target URL and output directory
-        TARGET_URL = 'http://testhtml5.vulnweb.com/'  // Provide the target URL here
-        OUTPUT_DIR = '/var/lib/jenkins/workspace/zap_scans/zap_reports/'  // Provide the desired output directory here
+        VIRTUAL_ENV = 'venv'  // Path to the virtual environment
     }
 
     stages {
@@ -16,12 +14,16 @@ pipeline {
             }
         }
         
-        stage('Activate Virtual Environment') {
+        stage('Create Virtual Environment') {
             steps {
                 script {
-                    // Activate the virtual environment from the existing venv folder using '.' (dot) instead of 'source'
-                    echo 'Activating virtual environment...'
-                    sh '. venv/bin/activate'  // Use dot instead of source for sh compatibility
+                    // Check if the virtual environment exists, and create if it doesn't
+                    if (!fileExists("${VIRTUAL_ENV}/bin/activate")) {
+                        echo 'Creating virtual environment...'
+                        sh 'python3 -m venv venv'  // Create virtual environment
+                    } else {
+                        echo 'Virtual environment already exists.'
+                    }
                 }
             }
         }
@@ -29,71 +31,71 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 script {
-                    // Install dependencies from requirements.txt using pip
                     echo 'Installing Python dependencies...'
-                    sh 'pip install -r requirements.txt'  // Install dependencies (including zapv2)
+                    // Activate the virtual environment and install dependencies
+                    sh """
+                        . ${VIRTUAL_ENV}/bin/activate
+                        pip install --upgrade pip  // Ensure pip is the latest version
+                        pip install -r requirements.txt  // Install dependencies from requirements.txt
+                    """
                 }
             }
         }
 
         stage('Run Nmap Scan') {
             steps {
-                script {
-                    // Run Nmap scan script (scan_nmap.py)
-                    echo 'Running Nmap scan...'
-                    sh 'python3 scripts/scan_nmap.py'
-                }
+                echo 'Running Nmap scan...'
+                // sh 'python3 scripts/scan_nmap.py'
             }
         }
 
         stage('Run Nikto Scan') {
             steps {
-                script {
-                    // Run Nikto scan script (scan_nikto.py)
-                    echo 'Running Nikto scan...'
-                    sh 'python3 scripts/scan_nikto.py'
-                }
+                echo 'Running Nikto scan...'
+                // sh 'python3 scripts/scan_nikto.py'
             }
         }
 
         stage('Run ZAP Scan') {
             steps {
-                script {
-                    // Run ZAP scan script (scan_zap.py)
-                    echo 'Running ZAP scan...'
-                    sh 'python3 scripts/scan_zap.py'
-                }
+                echo 'Running ZAP scan...'
+                sh 'python3 scripts/scan_zap.py'
             }
         }
 
         stage('Run Metasploit Exploit') {
             steps {
-                script {
-                    // Run Metasploit exploitation script (exploit_metasploit.py)
-                    echo 'Running Metasploit exploit...'
-                    sh 'python3 scripts/exploit_metasploit.py'
-                }
+                echo 'Running Metasploit exploit...'
+                sh 'python3 scripts/scan_metasploit.py'
             }
         }
 
         stage('Generate Reports') {
             steps {
-                script {
-                    // Generate summary report from scan results (report_generator.py)
-                    echo 'Generating summary report...'
-                    sh 'python3 scripts/report_generator.py'
-                }
+                echo 'Generating reports...'
+                sh 'python3 generate_reports.py'
             }
         }
 
         stage('Send Notification') {
             steps {
-                script {
-                    // Send email notification with the summary report (notify.py)
-                    echo 'Sending notification email...'
-                    sh 'python3 scripts/notify.py'
-                }
+                echo 'Sending notifications...'
+                // Example: Send notification through Slack or Email
+                sh 'python3 send_notification.py'
             }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up...'
+            // Any cleanup actions go here (e.g., removing temporary files, stopping containers)
+        }
+        success {
+            echo 'Pipeline succeeded!'
+        }
+        failure {
+            echo 'Pipeline failed.'
         }
     }
 }
