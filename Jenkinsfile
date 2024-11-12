@@ -25,7 +25,7 @@ pipeline {
                     // Create a new virtual environment
                     sh "python3 -m venv ${VENV_DIR}"
 
-                    // Ensure the virtual environment is activated for subsequent steps
+                    // Ensure the virtual environment is created successfully
                     echo 'Virtual environment created.'
                 }
             }
@@ -35,12 +35,9 @@ pipeline {
             steps {
                 script {
                     echo 'Installing Python dependencies...'
-                    // Activate the virtual environment and install dependencies
+                    // Activate the virtual environment using bash
                     sh """
-                        source ${VENV_DIR}/bin/activate  # Activate the virtual environment
-                        pip install --upgrade pip  # Ensure pip is the latest version
-                        pip install --upgrade urllib3 six  # Upgrade urllib3 and six
-                        pip install -r requirements.txt  # Install dependencies from requirements.txt
+                        bash -c 'source ${VENV_DIR}/bin/activate && pip install --upgrade pip && pip install --upgrade urllib3 six && pip install -r requirements.txt'
                     """
                 }
             }
@@ -64,10 +61,9 @@ pipeline {
             steps {
                 echo 'Running ZAP scan...'
                 script {
-                    // Activate venv and run ZAP scan script
+                    // Activate venv and run ZAP scan script using bash
                     sh """
-                        source ${VENV_DIR}/bin/activate
-                        python3 scripts/scan_zap.py  # Ensure this script exists and is executable
+                        bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_zap.py'
                     """
                 }
             }
@@ -86,8 +82,7 @@ pipeline {
                 script {
                     // Ensure the virtual environment is activated before running the report generator
                     sh """
-                        source ${VENV_DIR}/bin/activate
-                        python3 scripts/report_generator.py  # Run the report generator script
+                        bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/report_generator.py'
                     """
                 }
             }
