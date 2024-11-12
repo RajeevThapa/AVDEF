@@ -2,18 +2,22 @@ pipeline {
     agent any
 
     environment {
+        // Set environment variables for target URL and output directory
+        TARGET_URL = 'http://testhtml5.vulnweb.com/'  // Provide the target URL here
+        OUTPUT_DIR = '/var/lib/jenkins/workspace/zap_scans/zap_reports/'  // Provide the desired output directory here
         VIRTUAL_ENV = 'venv'  // Path to the virtual environment
     }
 
     stages {
         stage('Checkout') {
             steps {
+                echo 'Checking out code from Git repository...'
                 git branch: 'main', 
-                    credentialsId: 'c2a210b9-81da-4beb-ab7d-8c001b2fb92b', // Jenkins integration with GitHub
+                    credentialsId: 'c2a210b9-81da-4beb-ab7d-8c001b2fb92b',  // Jenkins integration with GitHub
                     url: 'https://github.com/RajeevThapa/AVDEF'
             }
         }
-        
+
         stage('Create Virtual Environment') {
             steps {
                 script {
@@ -34,9 +38,9 @@ pipeline {
                     echo 'Installing Python dependencies...'
                     // Activate the virtual environment and install dependencies
                     sh """
-                        . ${VIRTUAL_ENV}/bin/activate
-                        pip install --upgrade pip  // Ensure pip is the latest version
-                        pip install -r requirements.txt  // Install dependencies from requirements.txt
+                        . venv/bin/activate  # Activate the virtual environment
+                        pip install --upgrade pip  # Ensure pip is the latest version
+                        pip install -r requirements.txt  # Install dependencies from requirements.txt
                     """
                 }
             }
