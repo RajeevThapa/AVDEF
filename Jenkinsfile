@@ -16,6 +16,16 @@ pipeline {
             }
         }
 
+        stage('Activate Virtual Environment') {
+            steps {
+                script {
+                    // Activate the virtual environment from the existing venv folder
+                    echo 'Activating virtual environment...'
+                    sh 'source venv/bin/activate'
+                }
+            }
+        }
+
         stage('Run Nmap Scan') {
             steps {
                 script {
