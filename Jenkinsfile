@@ -112,7 +112,7 @@ pipeline {
                 sh "mkdir -p ${env.WORKSPACE}/scans/zap ${env.WORKSPACE}/scans/nikto ${env.WORKSPACE}/scans/nmap ${env.WORKSPACE}/scans/reports"
                 
                 // Copy the generated reports to the workspace
-                sh "cp /var/lib/jenkins/workspace/zap_scans/zap_reports/${sanitizedUrl}__zap_report.html ${zapReportPath}"
+                sh "cp /var/lib/jenkins/workspace/zap_scans/zap_reports/${sanitizedUrl}_zap_report.html ${zapReportPath}"
                 sh "cp /root/.jenkins/workspace/AVDEF/scans/nikto/${sanitizedUrl}_nikto.txt ${niktoReportPath}"
                 sh "cp /root/.jenkins/workspace/AVDEF/scans/nmap/${sanitizedUrl}_nmap.txt ${nmapReportPath}"
                 sh "cp /root/.jenkins/workspace/AVDEF/scans/reports/summary_report.md ${summaryReportPath}"
