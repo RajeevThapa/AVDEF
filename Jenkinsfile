@@ -5,32 +5,28 @@ pipeline {
         // Set environment variables for target URL and output directory
         TARGET_URL = 'http://testhtml5.vulnweb.com/'  // Provide the target URL here
         OUTPUT_DIR = '/var/lib/jenkins/workspace/zap_scans/zap_reports/'  // Provide the desired output directory here
-        VIRTUAL_ENV = 'venv'  // Path to the virtual environment
+        VENV_DIR = 'venv'  // Path to the virtual environment
     }
 
     stages {
         stage('Checkout') {
             steps {
                 echo 'Checking out code from Git repository...'
-                git branch: 'main', 
-                    credentialsId: 'c2a210b9-81da-4beb-ab7d-8c001b2fb92b',  // Jenkins integration with GitHub
-                    url: 'https://github.com/RajeevThapa/AVDEF'
+                checkout scm
             }
         }
 
         stage('Create Virtual Environment') {
             steps {
                 script {
-                    // Remove any existing venv
-                    sh 'rm -rf ${VENV_DIR}'
+                    // Remove any existing virtual environment (if exists)
+                    sh "rm -rf ${VENV_DIR}"
 
                     // Create a new virtual environment
-                    sh 'python3 -m venv ${VENV_DIR}'
+                    sh "python3 -m venv ${VENV_DIR}"
 
-                    // Activate the virtual environment
-                    sh '''
-                        source ${VENV_DIR}/bin/activate
-                    '''
+                    // Ensure the virtual environment is activated for subsequent steps
+                    echo 'Virtual environment created.'
                 }
             }
         }
@@ -41,7 +37,7 @@ pipeline {
                     echo 'Installing Python dependencies...'
                     // Activate the virtual environment and install dependencies
                     sh """
-                        . venv/bin/activate  # Activate the virtual environment
+                        source ${VENV_DIR}/bin/activate  # Activate the virtual environment
                         pip install --upgrade pip  # Ensure pip is the latest version
                         pip install --upgrade urllib3 six  # Upgrade urllib3 and six
                         pip install -r requirements.txt  # Install dependencies from requirements.txt
@@ -50,18 +46,17 @@ pipeline {
             }
         }
 
-
         stage('Run Nmap Scan') {
             steps {
                 echo 'Running Nmap scan...'
-                // sh 'python3 scripts/scan_nmap.py'
+                // sh 'python3 scripts/scan_nmap.py'  // Uncomment when you add the Nmap scan script
             }
         }
 
         stage('Run Nikto Scan') {
             steps {
                 echo 'Running Nikto scan...'
-                // sh 'python3 scripts/scan_nikto.py'
+                // sh 'python3 scripts/scan_nikto.py'  // Uncomment when you add the Nikto scan script
             }
         }
 
@@ -69,11 +64,11 @@ pipeline {
             steps {
                 echo 'Running ZAP scan...'
                 script {
-                    // Activate venv and run ZAP script
-                    sh '''
+                    // Activate venv and run ZAP scan script
+                    sh """
                         source ${VENV_DIR}/bin/activate
-                        python3 scripts/scan_zap.py
-                    '''
+                        python3 scripts/scan_zap.py  # Ensure this script exists and is executable
+                    """
                 }
             }
         }
@@ -81,7 +76,7 @@ pipeline {
         stage('Run Metasploit Exploit') {
             steps {
                 echo 'Running Metasploit exploit...'
-                // sh 'python3 scripts/scan_metasploit.py'
+                // sh 'python3 scripts/scan_metasploit.py'  // Uncomment when you add the Metasploit exploit script
             }
         }
 
@@ -102,7 +97,7 @@ pipeline {
             steps {
                 echo 'Sending notifications...'
                 // Example: Send notification through Slack or Email
-                sh 'python3 scans/notify.py'
+                sh 'python3 scans/notify.py'  // Ensure this script exists
             }
         }
     }
