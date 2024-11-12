@@ -112,11 +112,15 @@ pipeline {
                 sh "mkdir -p ${env.WORKSPACE}/scans/zap ${env.WORKSPACE}/scans/nikto ${env.WORKSPACE}/scans/nmap ${env.WORKSPACE}/scans/reports"
                 
                 // Copy the generated reports to the workspace
+                // sh "cp /var/lib/jenkins/workspace/zap_scans/zap_reports/${sanitizedUrl}_zap_report.html ${zapReportPath}"
+                // sh "cp /root/.jenkins/workspace/AVDEF/scans/nikto/${sanitizedUrl}_nikto.txt ${niktoReportPath}"
+                // sh "cp /root/.jenkins/workspace/AVDEF/scans/nmap/${sanitizedUrl}_nmap.txt ${nmapReportPath}"
+                // sh "cp /root/.jenkins/workspace/AVDEF/scans/reports/summary_report.md ${summaryReportPath}"
                 sh "cp /var/lib/jenkins/workspace/zap_scans/zap_reports/${sanitizedUrl}_zap_report.html ${zapReportPath}"
-                sh "cp /root/.jenkins/workspace/AVDEF/scans/nikto/${sanitizedUrl}_nikto.txt ${niktoReportPath}"
-                sh "cp /root/.jenkins/workspace/AVDEF/scans/nmap/${sanitizedUrl}_nmap.txt ${nmapReportPath}"
-                sh "cp /root/.jenkins/workspace/AVDEF/scans/reports/summary_report.md ${summaryReportPath}"
-        
+                sh "cp ${env.WORKSPACE}/scans/nikto/${sanitizedUrl}_nikto.txt ${niktoReportPath}"
+                sh "cp ${env.WORKSPACE}/scans/nmap/${sanitizedUrl}_nmap.txt ${nmapReportPath}"
+                sh "cp ${env.WORKSPACE}/scans/reports/summary_report.md ${summaryReportPath}"
+
                 // Commit and push the results
                 sshagent(credentials: ['c2a210b9-81da-4beb-ab7d-8c001b2fb92b']) {
                     sh 'git add scans/zap scans/nikto scans/nmap scans/reports'
