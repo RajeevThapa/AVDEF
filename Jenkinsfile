@@ -42,6 +42,12 @@ pipeline {
                         pip install --upgrade pip  # Ensure pip is the latest version
                         pip install -r requirements.txt  # Install dependencies from requirements.txt
                     """
+                    
+                    // Verify zapv2 installation
+                    sh """
+                        . venv/bin/activate
+                        pip show python-owasp-zap-v2.4 || echo "zapv2 is not installed"
+                    """
                 }
             }
         }
@@ -49,6 +55,7 @@ pipeline {
         stage('Run Nmap Scan') {
             steps {
                 echo 'Running Nmap scan...'
+                // Uncomment this line to run the Nmap scan
                 // sh 'python3 scripts/scan_nmap.py'
             }
         }
@@ -56,6 +63,7 @@ pipeline {
         stage('Run Nikto Scan') {
             steps {
                 echo 'Running Nikto scan...'
+                // Uncomment this line to run the Nikto scan
                 // sh 'python3 scripts/scan_nikto.py'
             }
         }
@@ -63,20 +71,28 @@ pipeline {
         stage('Run ZAP Scan') {
             steps {
                 echo 'Running ZAP scan...'
-                sh 'python3 scripts/scan_zap.py'
+                script {
+                    // Run the ZAP scan script after activating the virtual environment
+                    sh """
+                        . venv/bin/activate  # Activate the virtual environment
+                        python3 scripts/scan_zap.py  # Run ZAP scan script
+                    """
+                }
             }
         }
 
         stage('Run Metasploit Exploit') {
             steps {
                 echo 'Running Metasploit exploit...'
-                sh 'python3 scripts/scan_metasploit.py'
+                // Uncomment this line to run the Metasploit exploit
+                // sh 'python3 scripts/scan_metasploit.py'
             }
         }
 
         stage('Generate Reports') {
             steps {
                 echo 'Generating reports...'
+                // Assuming generate_reports.py generates the necessary reports
                 sh 'python3 generate_reports.py'
             }
         }
