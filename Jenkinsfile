@@ -56,7 +56,7 @@ pipeline {
         stage('Generate Report') {
             steps {
                 script {
-                    sh "python3 scripts/report_generator.py"
+                    sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/report_generator.py'"
                 }
             }
         }
