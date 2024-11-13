@@ -69,6 +69,18 @@ pipeline {
             }
         }
     }
+        stage('Push Artifacts to GitHub') {
+            steps {
+                script {
+                    // Use SSH credentials to push to GitHub
+                    sshagent(credentials: ['c2a210b9-81da-4beb-ab7d-8c001b2fb92b']) {
+                        sh 'git add scans/*'
+                        sh 'git commit -m "Updated scan results and reports"'
+                        sh 'git push -u origin path-a'
+                    }
+                }
+            }
+        }
     post {
         always {
             archiveArtifacts artifacts: 'scans/**/*', allowEmptyArchive: true
