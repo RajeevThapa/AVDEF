@@ -68,7 +68,6 @@ pipeline {
                 }
             }
         }
-    }
         stage('Push Artifacts to GitHub') {
             steps {
                 script {
@@ -81,6 +80,7 @@ pipeline {
                 }
             }
         }
+    }
     post {
         always {
             archiveArtifacts artifacts: 'scans/**/*', allowEmptyArchive: true
