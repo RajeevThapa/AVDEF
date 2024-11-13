@@ -63,6 +63,7 @@ pipeline {
         stage('Send Notification') {
             steps {
                 script {
+                    echo "sending.."
                     // sh "python3 scripts/notify.py"
                 }
             }
