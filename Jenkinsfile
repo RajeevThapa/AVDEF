@@ -35,21 +35,21 @@ pipeline {
         stage('Run ZAP Scan') {
             steps {
                 script {
-                    sh "python3 scripts/scan_zap.py"
+                    sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_zap.py"
                 }
             }
         }
         stage('Run Nmap Scan') {
             steps {
                 script {
-                    sh "python3 scripts/scan_nmap.py"
+                    sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nmap.py"
                 }
             }
         }
         stage('Run Nikto Scan') {
             steps {
                 script {
-                    sh "python3 scripts/scan_nikto.py"
+                    sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nikto.py"
                 }
             }
         }
