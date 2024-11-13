@@ -44,7 +44,7 @@ pipeline {
             steps {
                 script {
                     echo "scanning.."
-                    // sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nmap.py'"
+                    sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nmap.py'"
                 }
             }
         }
@@ -52,7 +52,7 @@ pipeline {
             steps {
                 script {
                     echo "scanning.."
-                    // sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nikto.py'"
+                    sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nikto.py'"
                 }
             }
         }
@@ -79,7 +79,7 @@ pipeline {
                     sshagent(credentials: ['c2a210b9-81da-4beb-ab7d-8c001b2fb92b']) {
                         sh'''
                             git fetch --all
-                            git checkout -b path-a || git checkout path-a  # Switch to path-a or create it if it doesn't exist
+                            git checkout -b path-a || git checkout path-a
                             git add scans/*
                             git commit -m "Updated scan results and reports"
                             git push -u origin path-a
