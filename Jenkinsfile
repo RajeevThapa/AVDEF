@@ -35,6 +35,7 @@ pipeline {
         stage('Run ZAP Scan') {
             steps {
                 script {
+                    echo "scanning.."
                     sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_zap.py'"
                 }
             }
@@ -42,20 +43,23 @@ pipeline {
         stage('Run Nmap Scan') {
             steps {
                 script {
-                    sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nmap.py'"
+                    echo "scanning.."
+                    // sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nmap.py'"
                 }
             }
         }
         stage('Run Nikto Scan') {
             steps {
                 script {
-                    sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nikto.py'"
+                    echo "scanning.."
+                    // sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nikto.py'"
                 }
             }
         }
         stage('Generate Report') {
             steps {
                 script {
+                    echo "generating report.."
                     sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/report_generator.py'"
                 }
             }
@@ -73,9 +77,13 @@ pipeline {
                 script {
                     // Use SSH credentials to push to GitHub
                     sshagent(credentials: ['c2a210b9-81da-4beb-ab7d-8c001b2fb92b']) {
-                        sh 'git add scans/*'
-                        sh 'git commit -m "Updated scan results and reports"'
-                        sh 'git push -u origin path-a'
+                        sh'''
+                            git fetch --all
+                            git checkout -b path-a || git checkout path-a  # Switch to path-a or create it if it doesn't exist
+                            git add scans/*
+                            git commit -m "Updated scan results and reports"
+                            git push -u origin path-a
+                        '''
                     }
                 }
             }
