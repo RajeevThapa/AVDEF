@@ -3,7 +3,8 @@ pipeline {
 
     environment {
         // Set environment variables for target URL and output directory
-        TARGET_URL = 'http://testhtml5.vulnweb.com/'  // Provide the target URL here
+        // TARGET_URL = 'http://testhtml5.vulnweb.com/'  // Provide the target URL here
+        TARGET_URL = 'http://example.com/'  // Provide the target URL here
         OUTPUT_DIR = '/var/lib/jenkins/workspace/AVDEF/scans'  // Unified output directory for all scans
         VENV_DIR = 'venv'  // Path to the virtual environment
     }
@@ -99,6 +100,7 @@ pipeline {
         stage('Commit and Push Scan Results') {
             steps {
                 script {
+                    // Sanitize URL for valid file names
                     def sanitizedUrl = TARGET_URL.replaceAll('https?://', '').replaceAll('/', '_')
                     
                     // Define report paths
