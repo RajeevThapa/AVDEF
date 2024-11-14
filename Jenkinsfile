@@ -74,7 +74,7 @@ pipeline {
             steps {
                 script {
                     echo "sending.."
-                    // sh "python3 scripts/notify.py"
+                    sh "python3 scripts/notify.py"
                 }
             }
         }
@@ -86,7 +86,7 @@ pipeline {
                         sh'''
                             git add scans/*
                             git commit -m "Updated scan results and reports"
-                            git push git@github.com:RajeevThapa/AVDEF.git HEAD:path-a
+                            git push git@github.com:RajeevThapa/AVDEF.git HEAD:main
                         '''
                     }
                 }
