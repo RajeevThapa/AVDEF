@@ -84,7 +84,7 @@ Sends the vulnerability scan report via email to the security team.
 
 ## Jenkins CI/CD Pipeline
 Automate the end-to-end process with Jenkins by executing the steps in `Jenkinsfile`.
-![image](https://github.com/user-attachments/assets/7e78605d-f035-4ba2-b4e3-9a4056487ae6)
+![image](https://github.com/user-attachments/assets/db3b5420-84b9-40f2-b5d4-528a91ac6bf3)
 
 ## Sample Runtime Statistics
 - **scan_nmap.py**: Approx. 460 seconds for `http://testhtml5.vulnweb.com`.
