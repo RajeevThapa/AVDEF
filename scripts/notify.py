@@ -2,6 +2,7 @@ import smtplib
 import os
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
+import socket
 
 def send_notification():
     # Get the workspace directory from the environment variable, default to current directory if not found
@@ -29,10 +30,18 @@ def send_notification():
     msg.attach(MIMEText(report_content, 'plain'))
 
     # SMTP configuration using environment variables for security
-    smtp_server = os.getenv('SMTP_SERVER', 'smtp.example.com')
+    smtp_server = os.getenv('SMTP_SERVER', 'sandbox.smtp.mailtrap.io')
     smtp_port = int(os.getenv('SMTP_PORT', 587))  # Default to 587 if not set (for TLS)
-    smtp_user = os.getenv('SMTP_USER', 'scanner@example.com')
-    smtp_password = os.getenv('SMTP_PASSWORD', 'password')
+    smtp_user = os.getenv('SMTP_USER', '2cb76ee748bacb')
+    smtp_password = os.getenv('SMTP_PASSWORD', 'ed891a165fdcef')
+
+    # Check if the SMTP server is reachable
+    try:
+        socket.gethostbyname(smtp_server)  # Try resolving the SMTP server's hostname
+        print(f"SMTP server {smtp_server} is reachable.")
+    except socket.gaierror:
+        print(f"Error: Cannot resolve the SMTP server {smtp_server}. Please check your DNS settings.")
+        return
 
     try:
         # Connect to SMTP server with TLS
