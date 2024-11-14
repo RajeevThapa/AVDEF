@@ -51,9 +51,15 @@ pipeline {
         stage('Run Nikto Scan') {
             steps {
                 script {
-                    echo "scanning.."
+                    echo "Running Nikto Scan.."
                     sh "bash -c 'source ${VENV_DIR}/bin/activate && python3 scripts/scan_nikto.py'"
                 }
+            }
+        }
+        stage('Run Metasploit Exploit') {
+            steps {
+                echo 'Running Metasploit exploit...'
+                sh 'python3 scripts/exploit_metasploit.py'
             }
         }
         stage('Generate Report') {
@@ -78,15 +84,9 @@ pipeline {
                     // Use SSH credentials to push to GitHub
                     sshagent(credentials: ['c2a210b9-81da-4beb-ab7d-8c001b2fb92b']) {
                         sh'''
-                            // Commit any uncommitted changes first
                             git add scans/*
-                            git diff-index --quiet HEAD || git commit -m "Updated scan results and reports"
-                            
-                            // Fetch all branches
-                            git fetch --all
-
-                            # Switch to path-a or create it if it doesn't exist
-                            git push -u origin path-a
+                            git commit -m "Updated scan results and reports"
+                            git push git@github.com:RajeevThapa/AVDEF.git HEAD:path-a
                         '''
                     }
                 }
