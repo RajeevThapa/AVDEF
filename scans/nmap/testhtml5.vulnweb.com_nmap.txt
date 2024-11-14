@@ -1,10 +1,16 @@
-# Nmap 7.94SVN scan initiated Thu Nov 14 01:42:26 2024 as: nmap -sV --script vuln -oN ./scans/nmap/testhtml5.vulnweb.com_nmap.txt testhtml5.vulnweb.com
+# Nmap 7.94SVN scan initiated Thu Nov 14 02:29:21 2024 as: nmap -sV --script vuln -oN ./scans/nmap/testhtml5.vulnweb.com_nmap.txt testhtml5.vulnweb.com
 Nmap scan report for testhtml5.vulnweb.com (44.228.249.3)
 Host is up (0.19s latency).
 rDNS record for 44.228.249.3: ec2-44-228-249-3.us-west-2.compute.amazonaws.com
 Not shown: 999 filtered tcp ports (no-response)
 PORT   STATE SERVICE VERSION
 80/tcp open  http    nginx 1.19.0
+| http-dombased-xss: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=testhtml5.vulnweb.com
+|   Found the following indications of potential DOM based XSS: 
+|     
+|     Source: document.write('<div class="fb-comments" data-num-posts="4" data-width="470"  data-href="'+window.location.href+'"></div>')
+|_    Pages: http://testhtml5.vulnweb.com:80/static/app/post.js
 | http-csrf: 
 | Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=testhtml5.vulnweb.com
 |   Found the following possible CSRF vulnerabilities: 
@@ -13,15 +19,9 @@ PORT   STATE SERVICE VERSION
 |     Form id: loginform
 |_    Form action: /login
 |_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
-| http-dombased-xss: 
-| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=testhtml5.vulnweb.com
-|   Found the following indications of potential DOM based XSS: 
-|     
-|     Source: document.write('<div class="fb-comments" data-num-posts="4" data-width="470"  data-href="'+window.location.href+'"></div>')
-|_    Pages: http://testhtml5.vulnweb.com:80/static/app/post.js
 | http-enum: 
 |   /admin/: Possible admin folder (401 UNAUTHORIZED)
 |_  /samples/: Sample scripts
 
 Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
-# Nmap done at Thu Nov 14 01:49:58 2024 -- 1 IP address (1 host up) scanned in 451.69 seconds
+# Nmap done at Thu Nov 14 02:32:03 2024 -- 1 IP address (1 host up) scanned in 161.97 seconds
