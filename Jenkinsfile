@@ -6,6 +6,7 @@ pipeline {
         NMAP_OUTPUT_DIR = "./scans/nmap/"
         NIKTO_OUTPUT_DIR = "./scans/nikto/"
         ZAP_OUTPUT_DIR = "./scans/zap/"
+        REPORT_DIR = "./scans/reports/"  // Reports directory
         VENV_DIR = 'venv'  // Path to the virtual environment
     }
     stages {
