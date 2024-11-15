@@ -80,7 +80,9 @@ Runs Metasploit with pre-defined commands in `metasploit.rc` to exploit vulnerab
 Converts scan results from Nmap, ZAP, and Nikto into a summarized markdown report, saved in `scans/reports/summary_report.md`.
 
 ### notify.py
-Sends the vulnerability scan report via email to the security team.
+Sends the vulnerability scan report via email to the security team. Below is the email sent from the Jenkins pipeline to the mailing server.
+![image](https://github.com/user-attachments/assets/7263bc00-3aa4-431e-8c25-de23b7f0786b)
+
 
 ## Jenkins CI/CD Pipeline
 Automate the end-to-end process with Jenkins by executing the steps in `Jenkinsfile`.
