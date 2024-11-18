@@ -1,4 +1,4 @@
-# Automated Vulnerability Detection and Exploitation Framework (VDEF)
+# Automated Vulnerability Detection and Exploitation Framework (AVDEF)
 
 ## Overview
 AVDEF is a framework designed to automate the process of vulnerability detection, exploitation, and reporting. Tools like Nmap, Nikto, and OWASP ZAP for vulnerability scans, and Metasploit for exploitation, AVDEF automates each step, from scanning to notifying the security team(for now only sample SMTP has been setup) with detailed reports. For the non-automation part we have another repo which is modfied to work manually. Link: https://github.com/RajeevThapa/VDEF.
