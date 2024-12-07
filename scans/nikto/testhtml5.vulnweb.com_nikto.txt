@@ -38,3 +38,11 @@
 + GET /favicon.ico: Server leaks inodes via ETags, header found with file /favicon.ico, fields: 0x51e79f63 0x37e 
 + OPTIONS /: Allowed HTTP Methods: HEAD, OPTIONS, GET 
 + -3092: GET /samples/: /samples/: This might be interesting...
+- Nikto v2.1.5/2.1.5
++ Target Host: testhtml5.vulnweb.com
++ Target Port: 80
++ GET /: The anti-clickjacking X-Frame-Options header is not present.
++ GET /: Uncommon header 'access-control-allow-origin' found, with contents: *
++ GET /favicon.ico: Server leaks inodes via ETags, header found with file /favicon.ico, fields: 0x51e79f63 0x37e 
++ OPTIONS /: Allowed HTTP Methods: HEAD, OPTIONS, GET 
++ -3092: GET /samples/: /samples/: This might be interesting...
