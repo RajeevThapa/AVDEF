@@ -1,7 +1,8 @@
 pipeline {
     agent any
     environment {
-        TARGET_URL = "http://testhtml5.vulnweb.com"  // Change as needed
+        // TARGET_URL = "http://testhtml5.vulnweb.com"  // Change as needed
+        TARGET_URL = "http://testphp.vulnweb.com/"  // Change as needed
         ZAP_CONFIG_PATH = "./configs/zap_config.yaml"
         NMAP_OUTPUT_DIR = "./scans/nmap/"
         NIKTO_OUTPUT_DIR = "./scans/nikto/"
