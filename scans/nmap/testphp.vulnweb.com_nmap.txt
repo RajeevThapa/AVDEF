@@ -1,0 +1,161 @@
+# Nmap 7.94SVN scan initiated Thu Dec 19 19:17:39 2024 as: nmap -sV --script vuln -oN ./scans/nmap/testphp.vulnweb.com_nmap.txt testphp.vulnweb.com
+Nmap scan report for testphp.vulnweb.com (44.228.249.3)
+Host is up (0.19s latency).
+rDNS record for 44.228.249.3: ec2-44-228-249-3.us-west-2.compute.amazonaws.com
+Not shown: 999 filtered tcp ports (no-response)
+PORT   STATE SERVICE VERSION
+80/tcp open  http    nginx 1.19.0
+| http-csrf: 
+| Spidering limited to: maxdepth=3; maxpagecount=20; withinhost=testphp.vulnweb.com
+|   Found the following possible CSRF vulnerabilities: 
+|     
+|     Path: http://testphp.vulnweb.com:80/
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/guestbook.php
+|     Form id: 
+|     Form action: 
+|     
+|     Path: http://testphp.vulnweb.com:80/guestbook.php
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/login.php
+|     Form id: 
+|     Form action: userinfo.php
+|     
+|     Path: http://testphp.vulnweb.com:80/login.php
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/index.php
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/search.php?test=query
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/disclaimer.php
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/artists.php
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/userinfo.php
+|     Form id: 
+|     Form action: userinfo.php
+|     
+|     Path: http://testphp.vulnweb.com:80/userinfo.php
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/cart.php
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/categories.php
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/signup.php
+|     Form id: 
+|     Form action: /secured/newuser.php
+|     
+|     Path: http://testphp.vulnweb.com:80/signup.php
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/hpp/?pp=12
+|     Form id: 
+|     Form action: params.php?p=valid&pp=12
+|     
+|     Path: http://testphp.vulnweb.com:80/artists.php?artist=1
+|     Form id: 
+|     Form action: search.php?test=query
+|     
+|     Path: http://testphp.vulnweb.com:80/artists.php?artist=3
+|     Form id: 
+|_    Form action: search.php?test=query
+| http-sql-injection: 
+|   Possible sqli for queries:
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/artists.php?artist=1%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/artists.php?artist=3%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/artists.php?artist=2%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/showimage.php?file=%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/listproducts.php?cat=2%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/listproducts.php?cat=1%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/listproducts.php?cat=4%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/listproducts.php?cat=3%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/listproducts.php?artist=1%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|     http://testphp.vulnweb.com:80/search.php?test=query%27%20OR%20sqlspider
+|_    http://testphp.vulnweb.com:80/listproducts.php?artist=3%27%20OR%20sqlspider
+|_http-dombased-xss: Couldn't find any DOM based XSS.
+|_http-stored-xss: Couldn't find any stored XSS vulnerabilities.
+| http-cross-domain-policy: 
+|   VULNERABLE:
+|   Cross-domain and Client Access policies.
+|     State: VULNERABLE
+|       A cross-domain policy file specifies the permissions that a web client such as Java, Adobe Flash, Adobe Reader,
+|       etc. use to access data across different domains. A client acces policy file is similar to cross-domain policy
+|       but is used for M$ Silverlight applications. Overly permissive configurations enables Cross-site Request
+|       Forgery attacks, and may allow third parties to access sensitive data meant for the user.
+|     Check results:
+|       /crossdomain.xml:
+|   
+|   
+|   
+|   
+|         </cross-domain-policy>
+|       /clientaccesspolicy.xml:
+|   
+|   
+|   
+|   
+|   
+|   
+|   
+|   
+|   
+|   
+|   
+|   
+|         </access-policy>
+|     Extra information:
+|       Trusted domains:*
+|   
+|     References:
+|       https://www.adobe.com/devnet-docs/acrobatetk/tools/AppSec/CrossDomain_PolicyFile_Specification.pdf
+|       https://www.owasp.org/index.php/Test_RIA_cross_domain_policy_%28OTG-CONFIG-008%29
+|       http://acunetix.com/vulnerabilities/web/insecure-clientaccesspolicy-xml-file
+|       http://sethsec.blogspot.com/2014/03/exploiting-misconfigured-crossdomainxml.html
+|       http://gursevkalra.blogspot.com/2013/08/bypassing-same-origin-policy-with-flash.html
+|_      https://www.adobe.com/devnet/articles/crossdomain_policy_file_spec.html
+| http-enum: 
+|   /admin/: Possible admin folder
+|   /login.php: Possible admin folder
+|   /clientaccesspolicy.xml: Microsoft Silverlight crossdomain policy
+|   /crossdomain.xml: Adobe Flash crossdomain policy
+|   /CVS/: Potentially interesting folder w/ directory listing
+|   /images/: Potentially interesting folder w/ directory listing
+|   /pictures/: Potentially interesting folder w/ directory listing
+|   /secured/: Potentially interesting folder
+|_  /vendor/: Potentially interesting folder w/ directory listing
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Dec 19 19:25:16 2024 -- 1 IP address (1 host up) scanned in 456.42 seconds

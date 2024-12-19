@@ -234,50 +234,15 @@ Plugin Id | [10109](https://www.zaproxy.org/docs/alerts/10109/)
 
 ## Nikto Scan Results
 - Nikto v2.1.5/2.1.5
-+ Target Host: testhtml5.vulnweb.com
++ Target Host: testphp.vulnweb.com
 + Target Port: 80
++ GET /: Retrieved x-powered-by header: PHP/5.6.40-38+ubuntu20.04.1+deb.sury.org+1
 + GET /: The anti-clickjacking X-Frame-Options header is not present.
-+ GET /: Uncommon header 'access-control-allow-origin' found, with contents: *
-+ GET /favicon.ico: Server leaks inodes via ETags, header found with file /favicon.ico, fields: 0x51e79f63 0x37e 
-+ OPTIONS /: Allowed HTTP Methods: HEAD, OPTIONS, GET 
-+ -3092: GET /samples/: /samples/: This might be interesting...
-- Nikto v2.1.5/2.1.5
-+ Target Host: testhtml5.vulnweb.com
-+ Target Port: 80
-+ GET /: The anti-clickjacking X-Frame-Options header is not present.
-+ GET /: Uncommon header 'access-control-allow-origin' found, with contents: *
-+ GET /favicon.ico: Server leaks inodes via ETags, header found with file /favicon.ico, fields: 0x51e79f63 0x37e 
-+ OPTIONS /: Allowed HTTP Methods: HEAD, OPTIONS, GET 
-+ -3092: GET /samples/: /samples/: This might be interesting...
-- Nikto v2.1.5/2.1.5
-+ Target Host: testhtml5.vulnweb.com
-+ Target Port: 80
-+ GET /: The anti-clickjacking X-Frame-Options header is not present.
-+ GET /: Uncommon header 'access-control-allow-origin' found, with contents: *
-+ GET /favicon.ico: Server leaks inodes via ETags, header found with file /favicon.ico, fields: 0x51e79f63 0x37e 
-+ OPTIONS /: Allowed HTTP Methods: HEAD, OPTIONS, GET 
-+ -3092: GET /samples/: /samples/: This might be interesting...
-- Nikto v2.1.5/2.1.5
-+ Target Host: testhtml5.vulnweb.com
-+ Target Port: 80
-+ GET /: The anti-clickjacking X-Frame-Options header is not present.
-+ GET /: Uncommon header 'access-control-allow-origin' found, with contents: *
-+ GET /favicon.ico: Server leaks inodes via ETags, header found with file /favicon.ico, fields: 0x51e79f63 0x37e 
-+ OPTIONS /: Allowed HTTP Methods: HEAD, OPTIONS, GET 
-+ -3092: GET /samples/: /samples/: This might be interesting...
-- Nikto v2.1.5/2.1.5
-+ Target Host: testhtml5.vulnweb.com
-+ Target Port: 80
-+ GET /: The anti-clickjacking X-Frame-Options header is not present.
-+ GET /: Uncommon header 'access-control-allow-origin' found, with contents: *
-+ GET /favicon.ico: Server leaks inodes via ETags, header found with file /favicon.ico, fields: 0x51e79f63 0x37e 
-+ OPTIONS /: Allowed HTTP Methods: HEAD, OPTIONS, GET 
-+ -3092: GET /samples/: /samples/: This might be interesting...
-- Nikto v2.1.5/2.1.5
-+ Target Host: testhtml5.vulnweb.com
-+ Target Port: 80
-+ GET /: The anti-clickjacking X-Frame-Options header is not present.
-+ GET /: Uncommon header 'access-control-allow-origin' found, with contents: *
-+ GET /favicon.ico: Server leaks inodes via ETags, header found with file /favicon.ico, fields: 0x51e79f63 0x37e 
-+ OPTIONS /: Allowed HTTP Methods: HEAD, OPTIONS, GET 
-+ -3092: GET /samples/: /samples/: This might be interesting...
++ GET /clientaccesspolicy.xml: Server leaks inodes via ETags, header found with file /clientaccesspolicy.xml, fields: 0x5049b03d 0x133 
++ GET /clientaccesspolicy.xml: /clientaccesspolicy.xml contains a full wildcard entry. See http://msdn.microsoft.com/en-us/library/cc197955(v=vs.95).aspx
++ GET /clientaccesspolicy.xml: lines
++ GET /crossdomain.xml: /crossdomain.xml contains a full wildcard entry. See http://jeremiahgrossman.blogspot.com/2008/05/crossdomainxml-invites-cross-site.html
++ GET /crossdomain.xml: /crossdomain.xml contains 0 line which should be manually viewed for improper domains or wildcards.
++ -3268: GET /admin/: /admin/: Directory indexing found.
++ -3092: GET /admin/: /admin/: This might be interesting...
++ GET /login.php: /login.php: Admin login page/section found.
